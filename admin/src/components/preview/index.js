@@ -12,17 +12,19 @@ import {
 
 const preview = ({
   //All these parameters are passed from admin\src\index.js
-
+  intlLabel,
   attribute,
 }) => {
   const imageUrl =
     process.env.STRAPI_ADMIN_BACKEND_URL + "/" + attribute.options.url;
   const [isVisible, setIsVisible] = useState(false);
+  const buttonLabel = intlLabel?.defaultMessage || "Preview";
+  
   return (
     <Box>
       <Box paddingTop={2}>
         <Button onClick={() => setIsVisible((prev) => !prev)}>
-          <Typography>Preview</Typography>
+          <Typography>{buttonLabel}</Typography>
         </Button>
       </Box>
       {isVisible && (
@@ -37,7 +39,7 @@ const preview = ({
               as="h2"
               id="title"
             >
-              Preview
+              {buttonLabel}
             </Typography>
           </ModalHeader>
           <ModalBody style={{ height: "auto", maxHeight: "100vh" }}>
@@ -55,6 +57,10 @@ preview.defaultProps = {};
 
 // validation
 preview.propTypes = {
+  intlLabel: PropTypes.shape({
+    id: PropTypes.string,
+    defaultMessage: PropTypes.string,
+  }).isRequired,
   attribute: PropTypes.object.isRequired,
 };
 
